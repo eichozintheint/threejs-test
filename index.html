@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>3D Product Viewer</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #ffffff;
+        }
+        #buttons {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 10;
+        }
+        button {
+            padding: 10px 15px;
+            margin: 5px;
+            cursor: pointer;
+        }
+    </style>
+    <script type="importmap">
+    {
+        "imports": {
+            "three":"https://cdn.jsdelivr.net/npm/three@0.182.0/build/three.module.js",
+            "three/addons/":"https://cdn.jsdelivr.net/npm/three@0.182.0/examples/jsm/"
+        }
+    }
+    </script>
+</head>
+<body>
+<div id="buttons">
+    <button id="red">Red</button>
+    <button id="blue">Blue</button>
+    <button id="green">Green</button>
+</div>
+<script type="module" src="main.js"></script>
+</body>
+</html>
