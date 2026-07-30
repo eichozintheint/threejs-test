@@ -73,7 +73,7 @@
 
         // GLTFLoaderを作成
         const loader = new GLTFLoader();
-        const gltf = await loader.loadAsync('ToyCar.glb');
+        const gltf = await loader.loadAsync('./models/ToyCar.glb');
         const model = gltf.scene;
         model.scale.set(30, 30, 30);
         scene.add(model);
