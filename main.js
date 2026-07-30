@@ -12,7 +12,7 @@ renderer.setPixelRatio(window.devicePixelRatio);
 
 // シーンを作成
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0xffffff);
+scene.background = new THREE.Color(0xF5F5F5);
 
 // カメラを作成
 const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
