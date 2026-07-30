@@ -45,10 +45,12 @@ loader.load(
         product.traverse((child) => {
             if (child.isMesh) {
                 child.material = new THREE.MeshStandardMaterial({
-                    color: 0xff0000
+                    color: 0x8b0000,
+                    metalness: 0.8,
+                    roughness: 0.2
                 });
             }
-     });
+        });
         scene.add(product);
         const box = new THREE.Box3().setFromObject(product);
         const size = box.getSize(new THREE.Vector3());
