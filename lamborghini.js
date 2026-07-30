@@ -24,7 +24,7 @@ document.body.appendChild(renderer.domElement);
 // ライティング作成
 scene.add(new THREE.AmbientLight(0xffffff, 2));
 
-const dirLight = new THREE.DirectionalLight(0xffffff, 3);
+const dirLight = new THREE.DirectionalLight(0xff0000, 3);
 dirLight.position.set(5, 10, 5);
 scene.add(dirLight);
 
