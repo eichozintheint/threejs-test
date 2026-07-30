@@ -57,7 +57,7 @@
       // GLTF形式のモデルデータを読み込む
       const loader = new GLTFLoader();
       // GLTFファイルのパスを指定
-      const gltf = await loader.loadAsync("./models/gltf/gltf/ToyCar.gltf");
+      const gltf = await loader.loadAsync("./models/ToyCar.gltf");
       // 読み込み後に3D空間に追加
       const model = gltf.scene;
       scene.add(model);
