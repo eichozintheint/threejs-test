@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { OBJLoader } from "three/addons/loaders/OBJLoader.js";
-import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader.js';
+import { MTLLoader } from 'three/addons/loaders/MTLLoader.js';
 
 // レンダラーを作成
 const renderer = new THREE.WebGLRenderer({
