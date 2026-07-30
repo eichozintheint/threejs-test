@@ -42,6 +42,13 @@ loader.load(
     "./models/lamborghini.obj",
     (obj) => {
         product = obj;
+        product.traverse((child) => {
+            if (child.isMesh) {
+                child.material = new THREE.MeshStandardMaterial({
+                    color: 0xff0000
+                });
+            }
+     });
         scene.add(product);
         const box = new THREE.Box3().setFromObject(product);
         const size = box.getSize(new THREE.Vector3());
