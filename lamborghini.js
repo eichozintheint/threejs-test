@@ -39,7 +39,7 @@ let product;
 // モデルローダー
 const loader = new OBJLoader();
 loader.load(
-    "./models/lamborghini.obj",
+    "./models/lamborghini.mtl",
     (obj) => {
         product = obj;
         product.traverse((child) => {
