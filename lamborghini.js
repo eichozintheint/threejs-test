@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { OBJLoader } from "three/addons/loaders/OBJLoader.js";
+import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader.js';
 
 // レンダラーを作成
 const renderer = new THREE.WebGLRenderer({
@@ -37,59 +38,43 @@ controls.dampingFactor = 0.02;
 let product;
 
 // モデルローダー
-const loader = new OBJLoader();
-loader.load(
-    "./models/lamborghini.mtl",
-    (obj) => {
-        product = obj;
-        product.traverse((child) => {
-            if (child.isMesh) {
-                child.material = new THREE.MeshStandardMaterial({
-                    color: 0x8b0000,
-                    metalness: 0.8,
-                    roughness: 0.2
-                });
-            }
-        });
-        scene.add(product);
-        const box = new THREE.Box3().setFromObject(product);
-        const size = box.getSize(new THREE.Vector3());
-        const center = box.getCenter(new THREE.Vector3());
+const mtlLoader = new MTLLoader();
 
-        console.log("Size:", size);
-        console.log("Center:", center);
+mtlLoader.load('./models/obj/Lamborghini_Aventador.mtl', (materials) => {
 
-        // モデルを原点座標に移動
-        product.position.x -= center.x;
-        product.position.y -= center.y;
-        product.position.z -= center.z;
+    materials.preload();
 
-        // 移動後に再計算
-        box.setFromObject(product);
+    const objLoader = new OBJLoader();
+    objLoader.setMaterials(materials);
 
-        const newSize = box.getSize(new THREE.Vector3());
-        const maxDim = Math.max(
-            newSize.x,
-            newSize.y,
-            newSize.z
-        );
+    objLoader.load(
+        './models/obj/Lamborghini_Aventador.obj',
 
-        // カメラ距離
-        const fov = camera.fov * (Math.PI / 180);
-        let distance = maxDim / (2 * Math.tan(fov / 2));
-        distance *= 1.8;
-        camera.position.set(0, maxDim * 0.5, distance);
+        (obj) => {
+            product = obj;
+            scene.add(product);
 
-        controls.target.set(0, 0, 0);
-        controls.update();
-        console.log("Model loaded!");
-    },
+            const box = new THREE.Box3().setFromObject(product);
+            const center = box.getCenter(new THREE.Vector3());
 
-    undefined,
-    (error) => {
-        console.error(error);
-    }
-);
+            product.position.sub(center);
+            box.setFromObject(product);
+            const size = box.getSize(new THREE.Vector3());
+            const maxDim = Math.max(size.x, size.y, size.z);
+            const fov = THREE.MathUtils.degToRad(camera.fov);
+            let distance = maxDim / (2 * Math.tan(fov / 2));
+            distance *= 1.8;
+            camera.position.set(0, maxDim * 0.5, distance);
+            controls.target.set(0, 0, 0);
+            controls.update();
+            console.log("Model loaded!");
+        },
+        undefined,
+        (error) => {
+            console.error(error);
+        }
+    );
+});
 
 // アニメーションループ
 function animate() {
