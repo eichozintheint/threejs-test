@@ -23,6 +23,7 @@
         const canvasElement = document.querySelector("#myCanvas");
         const renderer = new THREE.WebGPURenderer({
             canvas: canvasElement,
+            antialias: true, // アンチエイリアスを有効にする
         });
         renderer.setPixelRatio(devicePixelRatio);
         renderer.setSize(width, height);
@@ -32,7 +33,9 @@
 
         // シーンを作成
         const scene = new THREE.Scene();
-        scene.background = new THREE.Color(0xF5F5F5);
+        const backgroundTexture = new THREE.TextureLoader().load("texture/sky.jpg");
+
+        scene.background = backgroundTexture;
 
         // カメラを作成
         const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 10000);
