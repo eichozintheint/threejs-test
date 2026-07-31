@@ -1,6 +1,7 @@
 <html>
   <head>
-    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>3Dバウンシングボール</title>
     <script type="importmap">
       {
         "imports": {
@@ -16,8 +17,8 @@
         import { OrbitControls} from "three/addons/controls/OrbitControls.js";
 
         // サイズを設定
-        const width = window.innerWidth;
-        const height = window.innerHeight;
+        const width = 500;
+        const height = 350;
 
         // レンダラーを作成
         const canvasElement = document.querySelector("#myCanvas");
@@ -98,6 +99,13 @@
     </script>
   </head>
   <body>
-    <canvas id="myCanvas"></canvas>
+    <div class="bouncing-ball">
+        <h2>3Dバウンシングボール</h2>
+        <p>Three.jsを使用して制作した3Dバウンシングボールのデモです。
+           重力、反発、回転などの物理的な動きをシンプルなシミュレーションで表現しています。
+           カメラ操作により、さまざまな角度からボールの動きを確認できます。
+        </p>
+        <canvas id="myCanvas"></canvas>
+    </div>
   </body>
 </html>
