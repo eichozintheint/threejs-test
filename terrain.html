@@ -102,7 +102,7 @@
         vertices.needsUpdate = true;
         terrainGeometry.rotateX(-Math.PI / 2);
 
-        const terrainTexture = new THREE.TextureLoader().load("texture/terrain.jpg");
+        const terrainTexture = new THREE.TextureLoader().load("textures/terrain.jpg");
         terrainTexture.wrapS = terrainTexture.wrapT = THREE.RepeatWrapping;
         terrainTexture.repeat.set(terrainSegments / 10, terrainSegments / 10);
         terrainTexture.magFilter = THREE.NearestFilter; // アンチエイリアスを外す
