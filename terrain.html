@@ -109,7 +109,7 @@
 
         const terrainMaterial = new THREE.MeshStandardMaterial({
             map: terrainTexture,
-            // wireframe: true
+            wireframe: true
         });
         const terrainMesh = new THREE.Mesh(terrainGeometry, terrainMaterial);
         scene.add(terrainMesh);
