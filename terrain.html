@@ -1,0 +1,148 @@
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>3D Terrain</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+
+        canvas {
+            display: block;
+        }
+
+        .terrain {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .terrain p {
+            text-align: left;
+        }
+    </style>
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://cdn.jsdelivr.net/npm/three@0.182.0/build/three.webgpu.js",
+                "three/webgpu": "https://cdn.jsdelivr.net/npm/three@0.182.0/build/three.webgpu.js",
+                "three/addons/":"https://cdn.jsdelivr.net/npm/three@0.182.0/examples/jsm/"
+            }
+        }
+    </script>
+    <script type="module">
+        import * as THREE from "three/webgpu";
+        import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+
+        //　サイズを作成
+        const width = 960;
+        const height = 540;
+
+        // レンダラーを作成
+        const canvasElement = document.querySelector("#myCanvas");
+        const renderer = new THREE.WebGPURenderer({
+            canvas: canvasElement,
+            antialias: true
+        });
+        renderer.setPixelRatio(devicePixelRatio);
+        renderer.setSize(width, height);
+
+        renderer.setAnimationLoop(tick);
+
+        // シーンを作成
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0xF5F5F5);
+
+        // カメラを作成
+        const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 10000);
+        camera.position.set(500, 500, 50);
+
+        // カメラコントローラーを作成
+        const controls = new OrbitControls(camera, canvasElement);
+        controls.target.set(0, 0, 0);
+        controls.update();
+        controls.enableDamping = true; // カメラの慣性を有効にする
+        controls.dampingFactor = 0.02; // 慣性の減衰係数を設定
+        controls.minPolarAngle = Math.PI / 2 - 0.05;
+        controls.maxPolarAngle = Math.PI / 2 - 0.05;
+
+        // 平行光源を作成
+        const directionalLight = new THREE.DirectionalLight(0xffffff);
+        directionalLight.position.set(100, -100, 1); 
+
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+        scene.add(directionalLight, ambientLight);
+
+        // 地形を作成
+        const terrainWidth = 500;
+        const terrainHeight = 500;
+        const terrainSegments = 80;
+        const terrainGeometry = new THREE.PlaneGeometry(
+            terrainWidth,
+            terrainHeight,
+            terrainSegments,
+            terrainSegments
+        );
+        const vertices = terrainGeometry.attributes.position;
+        for(let i = 0; i < vertices.count; i++){
+            const x = vertices.getX(i);
+            const y = vertices.getY(i);
+            const z = vertices.getZ(i);
+
+            const height =
+                Math.sin(x * 0.03 + y * 0.02 + Date.now() * 0.002) * 30;
+
+            vertices.setX(i, x);
+            vertices.setY(i, y);
+            vertices.setZ(i, height);
+        }
+        vertices.needsUpdate = true;
+        terrainGeometry.rotateX(-Math.PI / 2);
+
+        const terrainTexture = new THREE.TextureLoader().load("texture/terrain.jpg");
+        terrainTexture.wrapS = terrainTexture.wrapT = THREE.RepeatWrapping;
+        terrainTexture.repeat.set(terrainSegments / 10, terrainSegments / 10);
+        terrainTexture.magFilter = THREE.NearestFilter; // アンチエイリアスを外す
+
+        const terrainMaterial = new THREE.MeshStandardMaterial({
+            map: terrainTexture,
+            // wireframe: true
+        });
+        const terrainMesh = new THREE.Mesh(terrainGeometry, terrainMaterial);
+        scene.add(terrainMesh);
+
+        const ballGeometry1 = new THREE.SphereGeometry(15, 32, 32);
+        const ballMaterial1 = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+        const ballMesh1 = new THREE.Mesh(ballGeometry1, ballMaterial1);
+
+        const ballGeometry2 = new THREE.SphereGeometry(15, 32, 32);
+        const ballMaterial2 = new THREE.MeshBasicMaterial({ color: 0x0000ff });
+        const ballMesh2 = new THREE.Mesh(ballGeometry2, ballMaterial2);
+
+        ballMesh1.position.set(0, 20, 0);
+        ballMesh2.position.set(-0, 20, 50);
+        scene.add(ballMesh1);
+        scene.add(ballMesh2);
+
+        const speed = 1;
+        function tick() {
+            ballMesh1.position.x += speed;
+            ballMesh2.position.x += speed;
+            // requestAnimationFrame(tick);
+            controls.update();
+            renderer.render(scene, camera);
+        }
+    </script>
+</head>
+<body>
+    <div class="terrain">
+        <h2>3D Terrain</h2>
+        <p>Three.jsを使用して制作した3D Terrainのデモです。
+           高さマップを使用して地形を生成し、カメラ操作により、さまざまな角度から地形の詳細を確認できます。 </p>
+        <canvas id="myCanvas"></canvas>
+    </div>
+</body>
+</html>
