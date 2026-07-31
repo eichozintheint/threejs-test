@@ -1,0 +1,94 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://cdn.jsdelivr.net/npm/three@0.182.0/build/three.webgpu.js",
+          "three/webgpu": "https://cdn.jsdelivr.net/npm/three@0.182.0/build/three.webgpu.js",
+          "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.182.0/examples/jsm/"
+        }
+      }
+    </script>
+    <link rel="stylesheet" href="css/bouncing_ball.css" />
+    <script type="module">
+        import * as THREE from "three/webgpu";
+        import { OrbitControls} from "three/addons/controls/OrbitControls.js";
+
+        // サイズを設定
+        const width = window.innerWidth;
+        const height = window.innerHeight;
+
+        // レンダラーを作成
+        const canvasElement = document.querySelector("#myCanvas");
+        const renderer = new THREE.WebGPURenderer({
+            canvas: canvasElement,
+        });
+        renderer.setPixelRatio(devicePixelRatio);
+        renderer.setSize(width, height);
+
+        renderer.setAnimationLoop(tick);
+
+        // シーンを作成
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0xF5F5F5);
+
+        // カメラを作成
+        const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 10000);
+        camera.position.set(0, 0, 3000);
+
+        // カメラコントローラーを作成
+        const controls = new OrbitControls(camera, canvasElement);
+        controls.target.set(0, 0, 0);
+        controls.update();
+
+        // 平行光源を作成
+        const directionalLight = new THREE.DirectionalLight(0xffffff);
+        directionalLight.position.set(1, 1, 1);
+
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+        scene.add(directionalLight, ambientLight);
+
+        // 床のテクスチャー
+        const texture = new THREE.TextureLoader().load("textures/Grass005_2K-JPG_Color.jpg");
+        texture.colorSpace = THREE.SRGBColorSpace; // カラースペースを指定
+        texture.wrapS = texture.wrapT = THREE.RepeatWrapping; // リピート可能に
+        texture.repeat.set(10, 10); // 10x10マスに設定
+        texture.magFilter = THREE.NearestFilter; // アンチエイリアスを外す
+
+        const floor = new THREE.Mesh(
+          new THREE.PlaneGeometry(1000, 1000),
+          new THREE.MeshStandardMaterial({
+            map: texture,
+            roughness: 0.0,
+            metalness: 0.6,
+          }),
+        );
+        floor.rotation.x = -Math.PI / 2;
+        floor.receiveShadow = true; // 影の設定
+        scene.add(floor);
+
+        // ボールのテクスチャー
+        const ballTexture = new THREE.TextureLoader().load("textures/Wicker007A_2K-JPG_Color.jpg");
+        ballTexture.colorSpace = THREE.SRGBColorSpace;
+
+        // 球体を作成
+        const geometry = new THREE.SphereGeometry(300, 100, 100);
+        const material = new THREE.MeshStandardMaterial({ map: ballTexture });
+        const ball = new THREE.Mesh(geometry, material);
+        ball.castShadow = true; // 影の設定
+        scene.add(ball);
+
+        function tick() {
+            // 球体を上下に動かす
+            const time = Date.now() * 0.002;
+            ball.position.y = Math.abs(Math.sin(time)) * 200;
+
+            renderer.render(scene, camera);
+        }
+    </script>
+  </head>
+  <body>
+    <canvas id="myCanvas"></canvas>
+  </body>
+</html>
