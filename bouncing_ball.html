@@ -26,6 +26,7 @@
         });
         renderer.setPixelRatio(devicePixelRatio);
         renderer.setSize(width, height);
+        renderer.shadowMap.enabled = true;
 
         renderer.setAnimationLoop(tick);
 
@@ -35,12 +36,17 @@
 
         // カメラを作成
         const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 10000);
-        camera.position.set(0, 0, 3000);
+        camera.position.set(500, 500, -2000);
 
         // カメラコントローラーを作成
         const controls = new OrbitControls(camera, canvasElement);
         controls.target.set(0, 0, 0);
         controls.update();
+        controls.enableDamping = true; // カメラの慣性を有効にする
+        controls.dampingFactor = 0.02; // 慣性の減衰係数を設定
+        controls.minPolarAngle = 0;
+        controls.maxPolarAngle = Math.PI / 2;
+        controls.enablePan = false;
 
         // 平行光源を作成
         const directionalLight = new THREE.DirectionalLight(0xffffff);
@@ -57,10 +63,9 @@
         texture.magFilter = THREE.NearestFilter; // アンチエイリアスを外す
 
         const floor = new THREE.Mesh(
-          new THREE.PlaneGeometry(1000, 1000),
+          new THREE.PlaneGeometry(5000, 5000),
           new THREE.MeshStandardMaterial({
             map: texture,
-            roughness: 0.0,
             metalness: 0.6,
           }),
         );
@@ -73,7 +78,7 @@
         ballTexture.colorSpace = THREE.SRGBColorSpace;
 
         // 球体を作成
-        const geometry = new THREE.SphereGeometry(300, 100, 100);
+        const geometry = new THREE.SphereGeometry(200, 100, 100);
         const material = new THREE.MeshStandardMaterial({ map: ballTexture });
         const ball = new THREE.Mesh(geometry, material);
         ball.castShadow = true; // 影の設定
@@ -82,8 +87,9 @@
         function tick() {
             // 球体を上下に動かす
             const time = Date.now() * 0.002;
-            ball.position.y = Math.abs(Math.sin(time)) * 200;
+            ball.position.y = Math.abs(Math.sin(time))  * 200 + 300; // 球体の半径分を加算して床に埋まらないようにする
 
+            controls.update(); // カメラの慣性を更新
             renderer.render(scene, camera);
         }
     </script>
