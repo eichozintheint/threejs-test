@@ -98,7 +98,6 @@ rollButton.addEventListener(
         rotationSpeedX = 0;
         rotationSpeedY = 0;
         rotationSpeedZ = 0;
-        dice.position.y = -0.2;
         resultElement.textContent =
           `結果: ${result}`;
         rollButton.disabled =
