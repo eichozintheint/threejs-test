@@ -17,7 +17,7 @@ camera.position.set(0, 0, 6);
 const canvasElement = document.querySelector("#ui");
 
 // カメラコントロールを作成
-const controls = new THREE.OrbitControls(camera, canvasElement);
+const controls = new OrbitControls(camera, canvasElement);
 controls.enableDamping = true;
 controls.dampingFactor = 0.1;
 
