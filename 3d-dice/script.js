@@ -10,8 +10,8 @@ const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x101018);
 
 // カメラを作成
-const camera = new THREE.PerspectiveCamera(45, width / height, 1, 1000);
-camera.position.set(0, 2, 6);
+const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
+camera.position.set(0, 10, 6);
 
 // レンダラーを作成
 const renderer = new WebGPURenderer({
@@ -98,6 +98,7 @@ rollButton.addEventListener(
         rotationSpeedX = 0;
         rotationSpeedY = 0;
         rotationSpeedZ = 0;
+        dice.position.y = 0;
         resultElement.textContent =
           `結果: ${result}`;
         rollButton.disabled =
