@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { WebGPURenderer } from "three/webgpu";
 
 //　サイズを設定
 const width = window.innerWidth;
