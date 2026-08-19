@@ -10,8 +10,8 @@ const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x101018);
 
 // カメラを作成
-const camera = new THREE.PerspectiveCamera(45, width / height, 10, 1000);
-camera.position.set(0, 10, 6);
+const camera = new THREE.PerspectiveCamera(45, width / height, 100, 1000);
+camera.position.set(0, 0, 6);
 
 // レンダラーを作成
 const renderer = new WebGPURenderer({
