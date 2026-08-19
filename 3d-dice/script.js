@@ -45,12 +45,12 @@ const floorMaterial = new THREE.MeshStandardMaterial({
 const floor = new THREE.Mesh(floorGeometry, floorMaterial);
 
 floor.rotation.x = -Math.PI / 2;
-floor.position.y = -1;
+floor.position.y = -0.7;
 floor.receiveShadow = true;
 scene.add(floor);
 
 // ライティングを作成
-const ambientLight = new THREE.AmbientLight(0xffffff, 1);
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.3);
 scene.add(ambientLight);
 
 const directionalLight =new THREE.DirectionalLight(0xffffff, 3);
@@ -98,7 +98,7 @@ rollButton.addEventListener(
         rotationSpeedX = 0;
         rotationSpeedY = 0;
         rotationSpeedZ = 0;
-        dice.position.y = 0;
+        dice.position.y = -0.2;
         resultElement.textContent =
           `結果: ${result}`;
         rollButton.disabled =
