@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import { WebGPURenderer } from "three/webgpu";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 //　サイズを設定
 let width = window.innerWidth;
@@ -12,6 +13,13 @@ scene.background = new THREE.Color(0x101018);
 // カメラを作成
 const camera = new THREE.PerspectiveCamera(45, width / height, 1, 1000);
 camera.position.set(0, 0, 6);
+
+const canvasElement = document.querySelector("#ui");
+
+// カメラコントロールを作成
+const controls = new THREE.OrbitControls(camera, canvasElement);
+controls.enableDamping = true;
+controls.dampingFactor = 0.1;
 
 // レンダラーを作成
 const renderer = new WebGPURenderer({
