@@ -58,20 +58,24 @@ directionalLight.position.set(5, 6, 5);
 directionalLight.castShadow = true;
 scene.add(directionalLight);
 
+// ボタン動作
+const rollButton = document.getElementById("rollButton");
+const resultElement = document.getElementById("result");
+
+rollButton.addEventListener("click", () => {
+  console.log("ROLL!");
+});
+
+async function init() {
+  await renderer.init();
+  animate();
+}
+
 // アニメーションを作成
 function animate() {
   requestAnimationFrame(animate);
-//   dice.rotation.x += 0.01;
-//   dice.rotation.y += 0.01;
-  const rollButton =
-  document.getElementById("rollButton");
-
-  const resultElement =
-  document.getElementById("result");
-
-  rollButton.addEventListener("click", () => {
-    console.log("ROLL!");
-  });
+  // dice.rotation.x += 0.01;
+  // dice.rotation.y += 0.01;
   renderer.render(scene, camera);
 }
-animate();
+init();
