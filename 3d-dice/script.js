@@ -11,7 +11,7 @@ scene.background = new THREE.Color(0x101018);
 
 // カメラを作成
 const camera = new THREE.PerspectiveCamera(45, width / height, 1, 1000);
-camera.position.set(0, 0, 0);
+camera.position.set(0, 0, 6);
 
 // レンダラーを作成
 const renderer = new WebGPURenderer({
@@ -45,7 +45,7 @@ const floorMaterial = new THREE.MeshStandardMaterial({
 const floor = new THREE.Mesh(floorGeometry, floorMaterial);
 
 floor.rotation.x = -Math.PI / 2;
-floor.position.y = -1.5;
+floor.position.y = -0.5;
 floor.receiveShadow = true;
 scene.add(floor);
 
