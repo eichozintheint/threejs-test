@@ -125,6 +125,7 @@ function animate() {
     dice.rotation.y +=rotationSpeedY;
     dice.rotation.z +=rotationSpeedZ;
   }
+  controls.update();
   renderer.render(scene, camera);
 }
 // WEBGPU
