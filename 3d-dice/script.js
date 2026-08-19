@@ -10,7 +10,7 @@ const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x101018);
 
 // カメラを作成
-const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
+const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
 camera.position.set(0, 5, 6);
 
 // レンダラーを作成
