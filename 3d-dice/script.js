@@ -11,7 +11,7 @@ scene.background = new THREE.Color(0x101018);
 
 // カメラを作成
 const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
-camera.position.set(0, -5, 6);
+camera.position.set(0, 5, 6);
 
 // レンダラーを作成
 const renderer = new WebGPURenderer({
