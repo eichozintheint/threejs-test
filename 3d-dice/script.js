@@ -58,24 +58,95 @@ directionalLight.position.set(5, 6, 5);
 directionalLight.castShadow = true;
 scene.add(directionalLight);
 
-// ボタン動作
-const rollButton = document.getElementById("rollButton");
-const resultElement = document.getElementById("result");
+let isRolling = false;
+let rotationSpeedX = 0;
+let rotationSpeedY = 0;
+let rotationSpeedZ = 0;
 
-rollButton.addEventListener("click", () => {
-  console.log("ROLL!");
-});
 
-async function init() {
-  await renderer.init();
-  animate();
-}
+// ボタン
+const rollButton =
+  document.getElementById(
+    "rollButton"
+  );
 
-// アニメーションを作成
+const resultElement =
+  document.getElementById(
+    "result"
+  );
+
+rollButton.addEventListener(
+  "click",
+  () => {
+    if (isRolling) {
+      return;
+    }
+    console.log("ROLL!");
+    isRolling = true;
+    rotationSpeedX = 0.25;
+    rotationSpeedY = 0.35;
+    rotationSpeedZ = 0.15;
+    const result =
+      Math.floor(
+        Math.random() * 6
+      ) + 1;
+    resultElement.textContent ="ローリング......";
+    rollButton.disabled =
+      true;
+    setTimeout(
+      () => {
+        isRolling = false;
+        rotationSpeedX = 0;
+        rotationSpeedY = 0;
+        rotationSpeedZ = 0;
+        resultElement.textContent =
+          `Result: ${result}`;
+        rollButton.disabled =
+          false;
+      },
+      1500
+    );
+  }
+);
+
+// アニメーション
 function animate() {
   requestAnimationFrame(animate);
-  // dice.rotation.x += 0.01;
-  // dice.rotation.y += 0.01;
+  // 回転
+  if (isRolling) {
+    dice.rotation.x +=rotationSpeedX;
+    dice.rotation.y +=rotationSpeedY;
+    dice.rotation.z +=rotationSpeedZ;
+  }
   renderer.render(scene, camera);
 }
+// WEBGPU
+async function init() {
+  try {
+    await renderer.init();
+    animate();
+  }
+  catch (error) {
+    console.error(
+      "WebGPU エラー:",
+      error
+    );
+    resultElement.textContent = "WebGPU 失敗";
+  }
+}
+
+// リサイズ
+window.addEventListener(
+  "resize",
+  () => {
+    width = window.innerWidth;
+    height = window.innerHeight;
+    camera.aspect = width / height;
+    camera.updateProjectionMatrix();
+    renderer.setSize(width, height);
+    renderer.setPixelRatio(
+      Math.min(window.devicePixelRatio,2)
+    );
+  }
+);
 init();
