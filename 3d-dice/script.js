@@ -2,15 +2,15 @@ import * as THREE from "three";
 import { WebGPURenderer } from "three/webgpu";
 
 //　サイズを設定
-const width = window.innerWidth;
-const height = window.innerHeight;
+let width = window.innerWidth;
+let height = window.innerHeight;
 
 // シーンを作成
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x101018);
 
 // カメラを作成
-const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
+const camera = new THREE.PerspectiveCamera(45, width / height, 1, 1000);
 camera.position.set(0, 2, 6);
 
 // レンダラーを作成
@@ -26,7 +26,7 @@ renderer.shadowMap.enabled = true;
 document.body.appendChild(renderer.domElement);
 
 // Diceのオブジェクトを作成
-const diceGeometry = new THREE.BoxGeometry(2, 2, 2);
+const diceGeometry = new THREE.BoxGeometry(1, 1, 1);
 const diceMaterial = new THREE.MeshStandardMaterial({
   color: 0xffffff,
   roughness: 0.3,
@@ -81,11 +81,10 @@ rollButton.addEventListener(
     if (isRolling) {
       return;
     }
-    console.log("ROLL!");
     isRolling = true;
-    rotationSpeedX = 0.25;
-    rotationSpeedY = 0.35;
-    rotationSpeedZ = 0.15;
+    rotationSpeedX = 0.08;
+    rotationSpeedY = 0.12;
+    rotationSpeedZ = 0.05;
     const result =
       Math.floor(
         Math.random() * 6
@@ -100,7 +99,7 @@ rollButton.addEventListener(
         rotationSpeedY = 0;
         rotationSpeedZ = 0;
         resultElement.textContent =
-          `Result: ${result}`;
+          `結果: ${result}`;
         rollButton.disabled =
           false;
       },
@@ -139,8 +138,8 @@ async function init() {
 window.addEventListener(
   "resize",
   () => {
-    width = window.innerWidth;
-    height = window.innerHeight;
+    let width = window.innerWidth;
+    let height = window.innerHeight;
     camera.aspect = width / height;
     camera.updateProjectionMatrix();
     renderer.setSize(width, height);
